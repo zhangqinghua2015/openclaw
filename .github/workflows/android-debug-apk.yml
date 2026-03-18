@@ -5,24 +5,25 @@ on:
     branches:
       - main
     paths:
-      - 'apps/android/**'
-      - '.github/workflows/android-debug-apk.yml'
-      - 'package.json'
-      - 'bun.lock'
-      - 'bun.lockb'
-      - 'pnpm-lock.yaml'
+      - "apps/android/**"
+      - ".github/workflows/android-debug-apk.yml"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "pnpm-lock.yaml"
   pull_request:
     paths:
-      - 'apps/android/**'
-      - '.github/workflows/android-debug-apk.yml'
-      - 'package.json'
-      - 'bun.lock'
-      - 'bun.lockb'
-      - 'pnpm-lock.yaml'
+      - "apps/android/**"
+      - ".github/workflows/android-debug-apk.yml"
+      - "package.json"
+      - "bun.lock"
+      - "bun.lockb"
+      - "pnpm-lock.yaml"
   workflow_dispatch:
 
 jobs:
   build-debug-apk:
+    name: Build Debug APK
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -34,7 +35,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
           cache: gradle
 
       - name: Set up Bun
@@ -51,9 +52,10 @@ jobs:
         working-directory: apps/android
         run: ./gradlew :app:assembleDebug
 
-      - name: Upload debug APK
+      - name: Upload debug APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: openclaw-debug-apk
           path: apps/android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+          retention-days: 14
